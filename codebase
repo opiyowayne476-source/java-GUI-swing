@@ -1,0 +1,80 @@
+package student1;  
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class RadioButtonDemo extends JFrame implements ActionListener {
+    private JRadioButton birdButton, catButton, dogButton, rabbitButton, pigButton;
+    private ButtonGroup group;
+    private JLabel imageLabel;
+
+    public RadioButtonDemo() {
+        setTitle("RadioButtonDemo");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(500, 350);
+        setLocationRelativeTo(null); // Center window
+
+        // Panel for radio buttons
+        JPanel buttonPanel = new JPanel(new GridLayout(5, 1, 5, 5));
+        birdButton = new JRadioButton("Bird");
+        catButton = new JRadioButton("Cat");
+        dogButton = new JRadioButton("Dog");
+        rabbitButton = new JRadioButton("Rabbit");
+        pigButton = new JRadioButton("Pig");
+
+        // Group buttons
+        group = new ButtonGroup();
+        group.add(birdButton);
+        group.add(catButton);
+        group.add(dogButton);
+        group.add(rabbitButton);
+        group.add(pigButton);
+
+        // Add listeners
+        birdButton.addActionListener(this);
+        catButton.addActionListener(this);
+        dogButton.addActionListener(this);
+        rabbitButton.addActionListener(this);
+        pigButton.addActionListener(this);
+
+        // Add buttons to panel
+        buttonPanel.add(birdButton);
+        buttonPanel.add(catButton);
+        buttonPanel.add(dogButton);
+        buttonPanel.add(rabbitButton);
+        buttonPanel.add(pigButton);
+
+        // Image label
+        imageLabel = new JLabel("Select a pet to view image", JLabel.CENTER);
+        imageLabel.setFont(new Font("Arial", Font.ITALIC, 14));
+        imageLabel.setVerticalAlignment(JLabel.CENTER);
+
+        // Layout
+        setLayout(new BorderLayout(10, 10));
+        add(buttonPanel, BorderLayout.WEST);
+        add(imageLabel, BorderLayout.CENTER);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        String pet = e.getActionCommand();
+        JOptionPane.showMessageDialog(this, "You selected: " + pet);
+
+        // Load image safely
+        String path = "images/" + pet.toLowerCase() + ".png";
+        ImageIcon icon = new ImageIcon(path);
+
+        if (icon.getIconWidth() == -1) {
+            imageLabel.setText("Image for " + pet + " not found!");
+            imageLabel.setIcon(null);
+        } else {
+            imageLabel.setText(""); 
+            imageLabel.setIcon(icon);
+        }
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new RadioButtonDemo().setVisible(true));
+    }
+}
